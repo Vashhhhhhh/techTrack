@@ -1,0 +1,15 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Only authenticated users can read or write any document.
+    // Both founders share a single project so no per-user scoping is enforced
+    // at the rules layer — identity enforcement is handled client-side via
+    // Firebase Auth displayName ("Vash" / "Kole").
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+
+  }
+}
