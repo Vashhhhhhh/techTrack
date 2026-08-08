@@ -1,0 +1,23 @@
+# Firebase generated files & cache
+.firebase/
+.firebase/hosting.*
+firebase-debug.log*
+firestore-debug.log*
+
+# Node modules & dependencies (if using npm/Node later)
+node_modules/
+package-lock.json
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment files (for future private keys)
+.env
+.env.local
