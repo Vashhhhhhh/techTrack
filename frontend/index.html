@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>techTrack — Founders Hub</title>
-  <meta name="description" content="Private founder dashboard for tracking personal tasks, monitoring cofounder activity, and managing collaborative engineering projects in real time.">
+  <meta name="description"
+    content="Private founder dashboard for tracking personal tasks, monitoring cofounder activity, and managing collaborative engineering projects in real time.">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -31,35 +32,84 @@
 
   <style>
     /* ── Custom scrollbar ─────────────────────────────────── */
-    ::-webkit-scrollbar          { width: 3px; }
-    ::-webkit-scrollbar-track    { background: transparent; }
-    ::-webkit-scrollbar-thumb    { background: #3f3f46; border-radius: 2px; }
-    ::-webkit-scrollbar-thumb:hover { background: #14b8a6; }
+    ::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #3f3f46;
+      border-radius: 2px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #14b8a6;
+    }
 
     /* ── Animations ───────────────────────────────────────── */
     @keyframes slide-in {
-      from { opacity: 0; transform: translateY(-5px); }
-      to   { opacity: 1; transform: translateY(0);    }
-    }
-    @keyframes pulse-ring {
-      0%   { box-shadow: 0 0 0 0   rgba(20, 184, 166, 0.55); }
-      70%  { box-shadow: 0 0 0 5px rgba(20, 184, 166, 0);    }
-      100% { box-shadow: 0 0 0 0   rgba(20, 184, 166, 0);    }
-    }
-    @keyframes border-flash {
-      0%   { border-color: rgba(20,184,166,0.7); box-shadow: 0 0 16px rgba(20,184,166,0.12); }
-      100% { border-color: rgba(39,39,42,1);     box-shadow: none; }
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .slide-in      { animation: slide-in 0.18s ease-out forwards; }
-    .live-dot      { animation: pulse-ring 2s ease-in-out infinite; }
-    .flash-card    { animation: border-flash 1.6s ease-out forwards; }
+    @keyframes pulse-ring {
+      0% {
+        box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.55);
+      }
+
+      70% {
+        box-shadow: 0 0 0 5px rgba(20, 184, 166, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(20, 184, 166, 0);
+      }
+    }
+
+    @keyframes border-flash {
+      0% {
+        border-color: rgba(20, 184, 166, 0.7);
+        box-shadow: 0 0 16px rgba(20, 184, 166, 0.12);
+      }
+
+      100% {
+        border-color: rgba(39, 39, 42, 1);
+        box-shadow: none;
+      }
+    }
+
+    .slide-in {
+      animation: slide-in 0.18s ease-out forwards;
+    }
+
+    .live-dot {
+      animation: pulse-ring 2s ease-in-out infinite;
+    }
+
+    .flash-card {
+      animation: border-flash 1.6s ease-out forwards;
+    }
 
     /* ── Select: suppress default chrome arrow ────────────── */
-    select { appearance: none; -webkit-appearance: none; }
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+    }
 
     /* ── Checkbox accent ──────────────────────────────────── */
-    input[type="checkbox"]:checked { accent-color: #14b8a6; }
+    input[type="checkbox"]:checked {
+      accent-color: #14b8a6;
+    }
   </style>
 </head>
 
@@ -86,9 +136,7 @@
       <div class="flex items-center gap-3" id="headerAuth">
         <span class="text-xs text-zinc-700 tracking-[0.15em] uppercase font-light select-none">Signed in as</span>
         <span id="headerUsername" class="text-xs text-zinc-300 font-medium tracking-wide"></span>
-        <button
-          onclick="signOutUser()"
-          class="text-xs text-zinc-600 hover:text-zinc-300 border border-zinc-800 hover:border-zinc-600
+        <button onclick="signOutUser()" class="text-xs text-zinc-600 hover:text-zinc-300 border border-zinc-800 hover:border-zinc-600
                  px-2.5 py-1.5 rounded-lg transition-colors font-light tracking-wide">
           Sign out
         </button>
@@ -104,195 +152,196 @@
        DASHBOARD (hidden until authenticated)
   ========================================================== -->
   <div id="dashboard" class="hidden">
-  <main class="max-w-[1600px] mx-auto px-8 py-6">
-    <div class="grid grid-cols-3 gap-6 min-h-[85vh]">
+    <main class="max-w-[1600px] mx-auto px-8 py-6">
+      <div class="grid grid-cols-3 gap-6 min-h-[85vh]">
 
-      <!-- =====================================================
+        <!-- =====================================================
            CARD 1 — PERSONAL WORKSPACE
       ====================================================== -->
-      <div id="personalCard" class="bg-zinc-950 border border-zinc-800/80 rounded-xl flex flex-col overflow-hidden">
+        <div id="personalCard" class="bg-zinc-950 border border-zinc-800/80 rounded-xl flex flex-col overflow-hidden">
 
-        <!-- Card header -->
-        <div class="border-b border-zinc-800 px-5 py-4 flex items-center justify-between flex-shrink-0">
-          <div class="flex items-center gap-2.5">
-            <!-- Lock icon -->
-            <svg class="w-3.5 h-3.5 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-            </svg>
-            <span class="text-sm font-medium text-zinc-200 tracking-wide">Workspace</span>
+          <!-- Card header -->
+          <div class="border-b border-zinc-800 px-5 py-4 flex items-center justify-between flex-shrink-0">
+            <div class="flex items-center gap-2.5">
+              <!-- Lock icon -->
+              <svg class="w-3.5 h-3.5 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span class="text-sm font-medium text-zinc-200 tracking-wide">Workspace</span>
+            </div>
+            <span
+              class="text-xs px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20 tracking-wide font-light">
+              Private
+            </span>
           </div>
-          <span class="text-xs px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20 tracking-wide font-light">
-            Private
-          </span>
-        </div>
 
-        <!-- Task list (scrollable) -->
-        <div class="flex-1 overflow-y-auto px-5 py-3 min-h-0" id="personalList">
-          <div id="personalEmpty"
-               class="text-xs text-zinc-700 text-center py-10 font-light tracking-widest uppercase">
-            No items yet
+          <!-- Task list (scrollable) -->
+          <div class="flex-1 overflow-y-auto px-5 py-3 min-h-0" id="personalList">
+            <div id="personalEmpty"
+              class="text-xs text-zinc-700 text-center py-10 font-light tracking-widest uppercase">
+              No items yet
+            </div>
           </div>
-        </div>
 
-        <!-- Input area (pinned bottom) -->
-        <div class="border-t border-zinc-800 px-5 py-4 flex-shrink-0 bg-zinc-950">
-          <div class="flex items-center gap-2">
-            <input
-              type="text"
-              id="personalInput"
-              autocomplete="off" data-1p-ignore="true" data-lpignore="true"
-              placeholder="Add a to-do or idea... (Press Enter)"
-              onkeypress="if(event.key === 'Enter') addPersonalItem()"
-              class="flex-1 bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm font-light rounded-lg px-3.5 py-2.5
+          <!-- Input area (pinned bottom) -->
+          <div class="border-t border-zinc-800 px-5 py-4 flex-shrink-0 bg-zinc-950">
+            <div class="flex items-center gap-2">
+              <input type="text" id="personalInput" autocomplete="off" spellcheck="false" data-form-type="other"
+                data-1p-ignore="true" data-lpignore="true" readonly onfocus="this.removeAttribute('readonly');"
+                placeholder="Add a to-do or idea... (Press Enter)"
+                onkeydown="if(event.key === 'Enter') { event.preventDefault(); addPersonalItem(); }" class="flex-1 bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm font-light rounded-lg px-3.5 py-2.5
                      placeholder-zinc-700 focus:outline-none focus:border-teal-600/70 transition-colors min-w-0">
+            </div>
+            <!-- Share to Feed toggle -->
+            <label id="shareToFeedLabel" class="flex items-center gap-2 mt-2.5 cursor-pointer select-none w-fit group">
+              <div class="relative w-7 h-4 flex-shrink-0">
+                <input type="checkbox" id="shareToFeedToggle" class="sr-only peer">
+                <div class="w-7 h-4 rounded-full border border-zinc-700 bg-zinc-900 peer-checked:bg-teal-600/30 peer-checked:border-teal-600/60 transition-colors"></div>
+                <div class="absolute left-0.5 top-0.5 w-3 h-3 rounded-full bg-zinc-600 peer-checked:bg-teal-400 peer-checked:translate-x-3 transition-all"></div>
+              </div>
+              <span class="text-[11px] font-light tracking-wide text-zinc-600 group-has-[:checked]:text-teal-400 transition-colors">Send to cofounder feed</span>
+            </label>
           </div>
-        </div>
 
-      </div><!-- /Card 1 -->
+        </div><!-- /Card 1 -->
 
-      <!-- =====================================================
+        <!-- =====================================================
            CARD 2 — COFOUNDER ACTIVITY FEED
       ====================================================== -->
-      <div id="cofounderCard" class="bg-zinc-950 border border-zinc-800/80 rounded-xl flex flex-col overflow-hidden">
+        <div id="cofounderCard" class="bg-zinc-950 border border-zinc-800/80 rounded-xl flex flex-col overflow-hidden">
 
-        <!-- Card header -->
-        <div class="border-b border-zinc-800 px-5 py-4 flex items-center justify-between flex-shrink-0">
-          <div class="flex items-center gap-2.5">
-            <!-- Activity/bolt icon -->
-            <svg class="w-3.5 h-3.5 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-            </svg>
-            <span class="text-sm font-medium text-zinc-200 tracking-wide">Cofounder Feed</span>
-          </div>
-          <!-- Live indicator badge -->
-          <div class="flex items-center gap-1.5">
-            <div class="relative w-2 h-2 flex-shrink-0">
-              <div class="w-2 h-2 rounded-full bg-teal-400 live-dot"></div>
-              <div class="absolute inset-0 w-2 h-2 rounded-full bg-teal-400 opacity-25 scale-150"></div>
+          <!-- Card header -->
+          <div class="border-b border-zinc-800 px-5 py-4 flex items-center justify-between flex-shrink-0">
+            <div class="flex items-center gap-2.5">
+              <!-- Activity/bolt icon -->
+              <svg class="w-3.5 h-3.5 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span class="text-sm font-medium text-zinc-200 tracking-wide">Cofounder Feed</span>
             </div>
-            <span class="text-xs text-teal-400 tracking-[0.2em] font-medium uppercase">Live</span>
+            <!-- Live indicator badge -->
+            <div class="flex items-center gap-1.5">
+              <div class="relative w-2 h-2 flex-shrink-0">
+                <div class="w-2 h-2 rounded-full bg-teal-400 live-dot"></div>
+                <div class="absolute inset-0 w-2 h-2 rounded-full bg-teal-400 opacity-25 scale-150"></div>
+              </div>
+              <span class="text-xs text-teal-400 tracking-[0.2em] font-medium uppercase">Live</span>
+            </div>
           </div>
-        </div>
 
-        <!-- Status bar — thin news-ticker-style strip -->
-        <div class="border-b border-zinc-900 px-5 py-2 flex items-center gap-2 flex-shrink-0 bg-zinc-900/40">
-          <div class="w-1 h-1 rounded-full bg-zinc-700 flex-shrink-0"></div>
-          <span id="feedStatusText" class="text-xs text-zinc-600 font-light tracking-wide">Connecting to feed...</span>
-        </div>
-
-        <!-- Feed list (newest on top, scrollable) -->
-        <div class="flex-1 overflow-y-auto px-5 py-3 min-h-0 flex flex-col" id="cofounderList">
-          <div id="cofounderEmpty"
-               class="text-xs text-zinc-700 text-center py-10 font-light tracking-widest uppercase">
-            No cofounder activity
+          <!-- Status bar — thin news-ticker-style strip -->
+          <div class="border-b border-zinc-900 px-5 py-2 flex items-center gap-2 flex-shrink-0 bg-zinc-900/40">
+            <div class="w-1 h-1 rounded-full bg-zinc-700 flex-shrink-0"></div>
+            <span id="feedStatusText" class="text-xs text-zinc-600 font-light tracking-wide">Connecting to
+              feed...</span>
           </div>
-        </div>
 
-      </div><!-- /Card 2 -->
+          <!-- Feed list (newest on top, scrollable) -->
+          <div class="flex-1 overflow-y-auto px-5 py-3 min-h-0 flex flex-col" id="cofounderList">
+            <div id="cofounderEmpty"
+              class="text-xs text-zinc-700 text-center py-10 font-light tracking-widest uppercase">
+              No cofounder activity
+            </div>
+          </div>
 
-      <!-- =====================================================
+        </div><!-- /Card 2 -->
+
+        <!-- =====================================================
            CARD 3 — COLLABORATIVE PROJECT HUB
       ====================================================== -->
-      <div id="projectCard" class="bg-zinc-950 border border-zinc-800/80 rounded-xl flex flex-col overflow-hidden">
+        <div id="projectCard" class="bg-zinc-950 border border-zinc-800/80 rounded-xl flex flex-col overflow-hidden">
 
-        <!-- Card header -->
-        <div class="border-b border-zinc-800 px-5 py-4 flex items-center justify-between flex-shrink-0">
-          <div class="flex items-center gap-2.5">
-            <!-- Layers icon -->
-            <svg class="w-3.5 h-3.5 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-            </svg>
-            <span class="text-sm font-medium text-zinc-200 tracking-wide">Project Hub</span>
+          <!-- Card header -->
+          <div class="border-b border-zinc-800 px-5 py-4 flex items-center justify-between flex-shrink-0">
+            <div class="flex items-center gap-2.5">
+              <!-- Layers icon -->
+              <svg class="w-3.5 h-3.5 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+              </svg>
+              <span class="text-sm font-medium text-zinc-200 tracking-wide">Project Hub</span>
+            </div>
+            <span
+              class="text-xs px-2 py-0.5 rounded-full bg-zinc-900 text-zinc-500 border border-zinc-700/60 tracking-wide font-light">
+              Shared
+            </span>
           </div>
-          <span class="text-xs px-2 py-0.5 rounded-full bg-zinc-900 text-zinc-500 border border-zinc-700/60 tracking-wide font-light">
-            Shared
-          </span>
-        </div>
 
-        <!-- Main task pinned zone -->
-        <div class="border-b border-zinc-800 px-5 py-4 flex-shrink-0">
-          <p class="text-xs text-zinc-600 tracking-[0.18em] uppercase font-medium mb-2.5">Main Task</p>
-          <div id="mainTaskDisplay">
-            <p id="mainTaskEmpty" class="text-xs text-zinc-700 font-light italic leading-relaxed">
-              No main task set — mark one during creation.
-            </p>
-          </div>
-        </div>
-
-        <!-- Subtask list (scrollable) -->
-        <div class="flex-1 overflow-y-auto px-5 py-2 min-h-0" id="projectList"></div>
-
-        <!-- Add task form (pinned bottom) -->
-        <div class="border-t border-zinc-800 px-5 py-4 flex-shrink-0 bg-zinc-950">
-          <div class="flex flex-col gap-2.5">
-
-            <!-- Task text input -->
-            <input
-              type="text"
-              id="projectInput"
-              autocomplete="off" data-1p-ignore="true" data-lpignore="true"
-              placeholder="Add a task, spec, or note..."
-              class="w-full bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm font-light rounded-lg px-3.5 py-2.5
-                     placeholder-zinc-700 focus:outline-none focus:border-teal-600/70 transition-colors">
-
-            <!-- Controls row -->
-            <div class="flex items-center gap-2">
-
-              <!-- Importance dropdown -->
-              <div class="relative flex-1">
-                <select id="importanceSelect"
-                  class="w-full bg-zinc-900 border border-zinc-800 text-zinc-500 text-xs font-light pl-2.5 pr-6 py-2
-                         rounded-lg focus:outline-none focus:border-teal-600/60 transition-colors cursor-pointer">
-                  <option value="high">High</option>
-                  <option value="medium" selected>Medium</option>
-                  <option value="low">Low</option>
-                </select>
-                <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-2.5 h-2.5 text-zinc-700 pointer-events-none"
-                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                </svg>
-              </div>
-
-              <!-- Stage dropdown -->
-              <div class="relative flex-1">
-                <select id="stageSelect"
-                  class="w-full bg-zinc-900 border border-zinc-800 text-zinc-500 text-xs font-light pl-2.5 pr-6 py-2
-                         rounded-lg focus:outline-none focus:border-teal-600/60 transition-colors cursor-pointer">
-                  <option value="backlog">Backlog</option>
-                  <option value="in-progress">In Progress</option>
-                  <option value="complete">Complete</option>
-                </select>
-                <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-2.5 h-2.5 text-zinc-700 pointer-events-none"
-                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                </svg>
-              </div>
-
-              <!-- Main task toggle -->
-              <label class="flex items-center gap-1.5 cursor-pointer flex-shrink-0">
-                <input type="checkbox" id="isMainTaskCheck"
-                  class="w-3.5 h-3.5 rounded border-zinc-700 bg-zinc-900 cursor-pointer">
-                <span class="text-xs text-zinc-600 font-light whitespace-nowrap">Main</span>
-              </label>
-
-              <!-- Share button -->
-              <button
-                onclick="addProjectTask()"
-                class="flex-shrink-0 bg-teal-600/15 hover:bg-teal-600/25 border border-teal-600/30 hover:border-teal-500/60
-                       text-teal-400 text-xs font-medium rounded-lg px-3.5 py-2 transition-all tracking-wide">
-                Share
-              </button>
-
+          <!-- Main task pinned zone -->
+          <div class="border-b border-zinc-800 px-5 py-4 flex-shrink-0">
+            <p class="text-xs text-zinc-600 tracking-[0.18em] uppercase font-medium mb-2.5">Main Task</p>
+            <div id="mainTaskDisplay">
+              <p id="mainTaskEmpty" class="text-xs text-zinc-700 font-light italic leading-relaxed">
+                No main task set — mark one during creation.
+              </p>
             </div>
           </div>
-        </div>
 
-      </div><!-- /Card 3 -->
+          <!-- Subtask list (scrollable) -->
+          <div class="flex-1 overflow-y-auto px-5 py-2 min-h-0" id="projectList"></div>
 
-    </div>
-  </main>
+          <!-- Add task form (pinned bottom) -->
+          <div class="border-t border-zinc-800 px-5 py-4 flex-shrink-0 bg-zinc-950">
+            <div class="flex flex-col gap-2.5">
+
+              <!-- Task text input -->
+              <input type="text" id="projectInput" autocomplete="off" data-1p-ignore="true" data-lpignore="true"
+                readonly onfocus="this.removeAttribute('readonly');" placeholder="Add a task, spec, or note..." class="w-full bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm font-light rounded-lg px-3.5 py-2.5
+                     placeholder-zinc-700 focus:outline-none focus:border-teal-600/70 transition-colors">
+
+              <!-- Controls row -->
+              <div class="flex items-center gap-2">
+
+                <!-- Importance dropdown -->
+                <div class="relative flex-1">
+                  <select id="importanceSelect" class="w-full bg-zinc-900 border border-zinc-800 text-zinc-500 text-xs font-light pl-2.5 pr-6 py-2
+                         rounded-lg focus:outline-none focus:border-teal-600/60 transition-colors cursor-pointer">
+                    <option value="high">High</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="low">Low</option>
+                  </select>
+                  <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-2.5 h-2.5 text-zinc-700 pointer-events-none"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+
+                <!-- Stage dropdown -->
+                <div class="relative flex-1">
+                  <select id="stageSelect" class="w-full bg-zinc-900 border border-zinc-800 text-zinc-500 text-xs font-light pl-2.5 pr-6 py-2
+                         rounded-lg focus:outline-none focus:border-teal-600/60 transition-colors cursor-pointer">
+                    <option value="backlog">Backlog</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="complete">Complete</option>
+                  </select>
+                  <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-2.5 h-2.5 text-zinc-700 pointer-events-none"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+
+                <!-- Main task toggle -->
+                <label class="flex items-center gap-1.5 cursor-pointer flex-shrink-0">
+                  <input type="checkbox" id="isMainTaskCheck"
+                    class="w-3.5 h-3.5 rounded border-zinc-700 bg-zinc-900 cursor-pointer">
+                  <span class="text-xs text-zinc-600 font-light whitespace-nowrap">Main</span>
+                </label>
+
+                <!-- Share button -->
+                <button onclick="addProjectTask()" class="flex-shrink-0 bg-teal-600/15 hover:bg-teal-600/25 border border-teal-600/30 hover:border-teal-500/60
+                       text-teal-400 text-xs font-medium rounded-lg px-3.5 py-2 transition-all tracking-wide">
+                  Share
+                </button>
+
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /Card 3 -->
+
+      </div>
+    </main>
   </div><!-- /dashboard -->
 
   <!-- =========================================================
@@ -314,13 +363,11 @@
 
       <!-- Tabs -->
       <div class="flex border-b border-zinc-800">
-        <button id="tabLogin"
-          onclick="showTab('login')"
+        <button id="tabLogin" onclick="showTab('login')"
           class="flex-1 py-3 text-xs font-medium tracking-wide border-b-2 border-teal-500 text-zinc-200 transition-colors">
           Sign In
         </button>
-        <button id="tabRegister"
-          onclick="showTab('register')"
+        <button id="tabRegister" onclick="showTab('register')"
           class="flex-1 py-3 text-xs font-medium tracking-wide border-b-2 border-transparent text-zinc-600 transition-colors">
           Create Account
         </button>
@@ -331,56 +378,52 @@
 
       <!-- Login panel -->
       <div id="loginPanel" class="px-6 pb-6 flex flex-col gap-3">
-        <!-- Name selection -->
-        <div class="flex gap-3 pt-1">
-          <label class="flex items-center gap-2 cursor-pointer flex-1 bg-zinc-900 border border-zinc-800 hover:border-zinc-700
-                        rounded-lg px-3.5 py-2.5 transition-colors">
-            <input type="radio" name="loginName" value="Vash"
-              class="w-3.5 h-3.5 cursor-pointer" checked>
-            <span class="text-sm text-zinc-300 font-light">Vash</span>
-          </label>
-          <label class="flex items-center gap-2 cursor-pointer flex-1 bg-zinc-900 border border-zinc-800 hover:border-zinc-700
-                        rounded-lg px-3.5 py-2.5 transition-colors">
-            <input type="radio" name="loginName" value="Kole"
-              class="w-3.5 h-3.5 cursor-pointer">
-            <span class="text-sm text-zinc-300 font-light">Kole</span>
-          </label>
-        </div>
-        <input id="loginPassword" type="password" placeholder="Password"
-          class="w-full bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm font-light rounded-lg px-3.5 py-2.5
-                 placeholder-zinc-700 focus:outline-none focus:border-teal-600/70 transition-colors">
-        <button onclick="loginUser()"
-          class="w-full bg-teal-600/20 hover:bg-teal-600/30 border border-teal-600/40 hover:border-teal-500/70
-                 text-teal-400 text-sm font-medium rounded-lg py-2.5 transition-all tracking-wide mt-1">
-          Sign In
-        </button>
+        <form autocomplete="off" method="dialog" onsubmit="return false;" class="flex flex-col gap-3">
+          <!-- Name selection -->
+          <div class="flex gap-3 pt-1">
+            <label class="flex items-center gap-2 cursor-pointer flex-1 bg-zinc-900 border border-zinc-800 hover:border-zinc-700
+                          rounded-lg px-3.5 py-2.5 transition-colors">
+              <input type="radio" name="loginName" value="Vash" class="w-3.5 h-3.5 cursor-pointer" checked>
+              <span class="text-sm text-zinc-300 font-light">Vash</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer flex-1 bg-zinc-900 border border-zinc-800 hover:border-zinc-700
+                          rounded-lg px-3.5 py-2.5 transition-colors">
+              <input type="radio" name="loginName" value="Kole" class="w-3.5 h-3.5 cursor-pointer">
+              <span class="text-sm text-zinc-300 font-light">Kole</span>
+            </label>
+          </div>
+          <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Password" class="w-full bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm font-light rounded-lg px-3.5 py-2.5
+                   placeholder-zinc-700 focus:outline-none focus:border-teal-600/70 transition-colors">
+          <button type="button" onclick="loginUser()" class="w-full bg-teal-600/20 hover:bg-teal-600/30 border border-teal-600/40 hover:border-teal-500/70
+                   text-teal-400 text-sm font-medium rounded-lg py-2.5 transition-all tracking-wide mt-1">
+            Sign In
+          </button>
+        </form>
       </div>
 
       <!-- Register panel -->
       <div id="registerPanel" class="hidden px-6 pb-6 flex flex-col gap-3">
-        <!-- Name selection -->
-        <div class="flex gap-3 pt-1">
-          <label class="flex items-center gap-2 cursor-pointer flex-1 bg-zinc-900 border border-zinc-800 hover:border-zinc-700
-                        rounded-lg px-3.5 py-2.5 transition-colors">
-            <input type="radio" name="founderName" value="Vash"
-              class="w-3.5 h-3.5 cursor-pointer">
-            <span class="text-sm text-zinc-300 font-light">Vash</span>
-          </label>
-          <label class="flex items-center gap-2 cursor-pointer flex-1 bg-zinc-900 border border-zinc-800 hover:border-zinc-700
-                        rounded-lg px-3.5 py-2.5 transition-colors">
-            <input type="radio" name="founderName" value="Kole"
-              class="w-3.5 h-3.5 cursor-pointer">
-            <span class="text-sm text-zinc-300 font-light">Kole</span>
-          </label>
-        </div>
-        <input id="regPassword" type="password" placeholder="Password"
-          class="w-full bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm font-light rounded-lg px-3.5 py-2.5
-                 placeholder-zinc-700 focus:outline-none focus:border-teal-600/70 transition-colors">
-        <button onclick="registerUser()"
-          class="w-full bg-teal-600/20 hover:bg-teal-600/30 border border-teal-600/40 hover:border-teal-500/70
-                 text-teal-400 text-sm font-medium rounded-lg py-2.5 transition-all tracking-wide mt-1">
-          Create Account
-        </button>
+        <form autocomplete="off" method="dialog" onsubmit="return false;" class="flex flex-col gap-3">
+          <!-- Name selection -->
+          <div class="flex gap-3 pt-1">
+            <label class="flex items-center gap-2 cursor-pointer flex-1 bg-zinc-900 border border-zinc-800 hover:border-zinc-700
+                          rounded-lg px-3.5 py-2.5 transition-colors">
+              <input type="radio" name="founderName" value="Vash" class="w-3.5 h-3.5 cursor-pointer">
+              <span class="text-sm text-zinc-300 font-light">Vash</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer flex-1 bg-zinc-900 border border-zinc-800 hover:border-zinc-700
+                          rounded-lg px-3.5 py-2.5 transition-colors">
+              <input type="radio" name="founderName" value="Kole" class="w-3.5 h-3.5 cursor-pointer">
+              <span class="text-sm text-zinc-300 font-light">Kole</span>
+            </label>
+          </div>
+          <input id="regPassword" type="password" autocomplete="new-password" placeholder="Password" class="w-full bg-zinc-900 border border-zinc-800 text-zinc-200 text-sm font-light rounded-lg px-3.5 py-2.5
+                   placeholder-zinc-700 focus:outline-none focus:border-teal-600/70 transition-colors">
+          <button type="button" onclick="registerUser()" class="w-full bg-teal-600/20 hover:bg-teal-600/30 border border-teal-600/40 hover:border-teal-500/70
+                   text-teal-400 text-sm font-medium rounded-lg py-2.5 transition-all tracking-wide mt-1">
+            Create Account
+          </button>
+        </form>
       </div>
 
     </div>
@@ -399,10 +442,12 @@
       updateDoc,
       deleteDoc,
       getDocs,
+      getDoc,
       doc,
       serverTimestamp,
       writeBatch,
-      arrayUnion
+      arrayUnion,
+      arrayRemove
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import {
       getAuth,
@@ -415,34 +460,34 @@
 
     // ── Firebase config ─────────────────────────────────────────────────────────
     const firebaseConfig = {
-      apiKey:            "AIzaSyC6jMoiu6ycidGLSE54VfWhRVJVukyXfHg",
-      authDomain:        "founder-e698b.firebaseapp.com",
-      projectId:         "founder-e698b",
+      apiKey: "AIzaSyC6jMoiu6ycidGLSE54VfWhRVJVukyXfHg",
+      authDomain: "founder-e698b.firebaseapp.com",
+      projectId: "founder-e698b",
       messagingSenderId: "626348990221",
-      appId:             "1:626348990221:web:0b13c668e41ed87be91a44",
-      measurementId:     "G-BPEMHK88LL"
+      appId: "1:626348990221:web:0b13c668e41ed87be91a44",
+      measurementId: "G-BPEMHK88LL"
     };
 
-    const app  = initializeApp(firebaseConfig);
-    const db   = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
     const auth = getAuth(app);
 
     // ── App state ───────────────────────────────────────────────────────────────
-    let currentUser        = null;  // resolved from Firebase Auth displayName
-    let unsubscribers      = [];    // active listener teardown functions
+    let currentUser = null;  // resolved from Firebase Auth displayName
+    let unsubscribers = [];    // active listener teardown functions
     let cofounderPrevCount = 0;     // flash detection
 
     // ── Config maps ─────────────────────────────────────────────────────────────
     const IMPORTANCE = {
-      high:   { dot: "bg-teal-400",  label: "High",        sortOrder: 0 },
-      medium: { dot: "bg-zinc-400",  label: "Medium",      sortOrder: 1 },
-      low:    { dot: "bg-zinc-700",  label: "Low",         sortOrder: 2 },
+      high: { dot: "bg-teal-400", label: "High", sortOrder: 0 },
+      medium: { dot: "bg-zinc-400", label: "Medium", sortOrder: 1 },
+      low: { dot: "bg-zinc-700", label: "Low", sortOrder: 2 },
     };
 
     const STAGE = {
-      "in-progress": { label: "In Progress", headerColor: "text-teal-500",  pillColor: "text-teal-500 border-teal-700/40",  sortOrder: 0 },
-      "backlog":     { label: "Backlog",      headerColor: "text-zinc-500",  pillColor: "text-zinc-500 border-zinc-700",      sortOrder: 1 },
-      "complete":    { label: "Complete",     headerColor: "text-zinc-700",  pillColor: "text-zinc-600 border-zinc-800",      sortOrder: 2 },
+      "in-progress": { label: "In Progress", headerColor: "text-teal-500", pillColor: "text-teal-500 border-teal-700/40", sortOrder: 0 },
+      "backlog": { label: "Backlog", headerColor: "text-zinc-500", pillColor: "text-zinc-500 border-zinc-700", sortOrder: 1 },
+      "complete": { label: "Complete", headerColor: "text-zinc-700", pillColor: "text-zinc-600 border-zinc-800", sortOrder: 2 },
     };
 
     const STAGE_ORDER = ["in-progress", "backlog", "complete"];
@@ -460,8 +505,8 @@
     function relTime(ts) {
       if (!ts?.toMillis) return "just now";
       const s = Math.floor((Date.now() - ts.toMillis()) / 1000);
-      if (s < 60)    return "just now";
-      if (s < 3600)  return `${Math.floor(s / 60)}m ago`;
+      if (s < 60) return "just now";
+      if (s < 3600) return `${Math.floor(s / 60)}m ago`;
       if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
       return `${Math.floor(s / 86400)}d ago`;
     }
@@ -472,22 +517,34 @@
 
     window.addPersonalItem = async function () {
       const input = document.getElementById("personalInput");
-      const text  = input.value.trim();
+      const text = input.value.trim();
       if (!text) return;
+      const shareToggle = document.getElementById("shareToFeedToggle");
+      const sharedToFeed = shareToggle ? shareToggle.checked : false;
       input.value = "";
+      if (shareToggle) shareToggle.checked = false; // reset after submitting
       await addDoc(collection(db, "items"), {
         text,
-        type:      "personal",
-        owner:     currentUser,
+        type: "personal",
+        owner: currentUser,
         completed: false,
-        notes:     [],
+        notes: [],
+        sharedToFeed,
         createdAt: serverTimestamp()
       });
     };
 
+    const openNotes = new Set();
     window.toggleNotes = function (id) {
       const el = document.getElementById('notes-' + id);
-      if (el) el.classList.toggle('hidden');
+      if (el) {
+        el.classList.toggle('hidden');
+        if (el.classList.contains('hidden')) {
+          openNotes.delete(id);
+        } else {
+          openNotes.add(id);
+        }
+      }
     };
 
     window.addTaskNote = async function (collectionName, docId, inputId) {
@@ -500,6 +557,27 @@
       });
     };
 
+    window.deleteTaskNote = async function (collectionName, docId, noteText) {
+      await updateDoc(doc(db, collectionName, docId), {
+        notes: arrayRemove(noteText)
+      });
+    };
+
+    // Called by delete buttons on individual notes — reads raw text from data-note attribute
+    window.deleteNoteByEl = async function (btn) {
+      const collectionName = btn.dataset.col;
+      const docId          = btn.dataset.doc;
+      // data-note is HTML-escaped by esc(); decode it back to the raw string Firestore has
+      const tmp = document.createElement("textarea");
+      tmp.innerHTML = btn.dataset.note;
+      const noteText = tmp.value;
+      await updateDoc(doc(db, collectionName, docId), {
+        notes: arrayRemove(noteText)
+      });
+    };
+
+
+
     window.togglePersonalItem = async function (id, current) {
       await updateDoc(doc(db, "items", id), { completed: !current });
     };
@@ -510,14 +588,11 @@
 
     function renderPersonal(docs) {
       const container = document.getElementById("personalList");
-      const empty     = document.getElementById("personalEmpty");
 
       if (docs.length === 0) {
-        container.innerHTML = "";
-        container.appendChild(empty);
+        container.innerHTML = `<div id="personalEmpty" class="text-xs text-zinc-700 text-center py-10 font-light tracking-widest uppercase">No items yet</div>`;
         return;
       }
-      empty.remove?.();
 
       // Sort: incomplete first, then completed
       const sorted = [...docs].sort((a, b) =>
@@ -528,7 +603,7 @@
       sorted.forEach(snap => {
         const d = snap.data();
         const notesHtml = (d.notes || []).map(n => `<li class="text-xs text-zinc-400 font-light leading-relaxed break-words">${esc(n)}</li>`).join("");
-        
+
         const row = document.createElement("div");
         row.className = "flex flex-col py-2.5 border-b border-zinc-900/70 group slide-in gap-1.5";
         row.innerHTML = `
@@ -538,13 +613,13 @@
               onclick="togglePersonalItem('${snap.id}', ${d.completed})"
               class="flex-shrink-0 w-4 h-4 rounded border transition-colors flex items-center justify-center
                      ${d.completed
-                       ? "bg-teal-600 border-teal-600"
-                       : "border-zinc-700 bg-transparent hover:border-teal-600/70"}">
+            ? "bg-teal-600 border-teal-600"
+            : "border-zinc-700 bg-transparent hover:border-teal-600/70"}">
               ${d.completed
-                ? `<svg class="w-2.5 h-2.5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            ? `<svg class="w-2.5 h-2.5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
                    </svg>`
-                : ""}
+            : ""}
             </button>
             
             <!-- Task text -->
@@ -573,14 +648,26 @@
           </div>
           
           <!-- Notes Dropdown Content -->
-          <div id="notes-${snap.id}" class="hidden pl-7 pt-1 w-full">
-            <ul class="list-disc pl-4 mb-2 space-y-1 marker:text-zinc-700">
-              ${notesHtml}
+          <div id="notes-${snap.id}" class="${openNotes.has(snap.id) ? '' : 'hidden'} pl-7 pt-1 w-full">
+            <ul class="list-none pl-0 mb-2 space-y-1">
+              ${(d.notes || []).map(n => `
+                <li class="flex items-start justify-between gap-2">
+                  <span class="text-xs text-zinc-400 font-light leading-relaxed break-words flex-1">${esc(n)}</span>
+                  <button onclick="deleteNoteByEl(this)" 
+                          data-col="items" data-doc="${snap.id}" data-note="${esc(n)}"
+                          class="flex-shrink-0 text-zinc-700 hover:text-red-500/80 transition-all mt-0.5" title="Delete note">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </li>
+              `).join("")}
             </ul>
             <div class="flex items-center gap-2">
               <input type="text" id="noteInput-${snap.id}" placeholder="Add a note or link (Press Enter)" 
-                     autocomplete="off" data-1p-ignore="true" data-lpignore="true"
-                     onkeypress="if(event.key === 'Enter') addTaskNote('items', '${snap.id}', 'noteInput-${snap.id}')"
+                     autocomplete="off" spellcheck="false" data-form-type="other" data-1p-ignore="true" data-lpignore="true"
+                     readonly onfocus="this.removeAttribute('readonly');"
+                     onkeydown="if(event.key === 'Enter') { event.preventDefault(); addTaskNote('items', '${snap.id}', 'noteInput-${snap.id}'); }"
                      class="flex-1 bg-zinc-900/50 border border-zinc-800/80 text-zinc-300 text-xs font-light rounded px-2.5 py-1.5 focus:outline-none focus:border-teal-500/50 min-w-0">
             </div>
           </div>
@@ -603,10 +690,9 @@
     }
 
     function renderCofounderFeed(docs) {
-      const container  = document.getElementById("cofounderList");
-      const empty      = document.getElementById("cofounderEmpty");
+      const container = document.getElementById("cofounderList");
       const statusText = document.getElementById("feedStatusText");
-      const cofounder  = currentUser === "Vash" ? "Kole" : "Vash";
+      const cofounder = currentUser === "Vash" ? "Kole" : "Vash";
 
       // Flash on new items (skip on initial load)
       if (docs.length > cofounderPrevCount && cofounderPrevCount > 0) {
@@ -620,11 +706,9 @@
         : `${cofounder} has no activity yet`;
 
       if (docs.length === 0) {
-        container.innerHTML = "";
-        container.appendChild(empty);
+        container.innerHTML = `<div id="cofounderEmpty" class="text-xs text-zinc-700 text-center py-10 font-light tracking-widest uppercase">No cofounder activity</div>`;
         return;
       }
-      empty.remove?.();
 
       // Newest first
       const sorted = [...docs].sort((a, b) =>
@@ -671,16 +755,10 @@
           </div>
           
           <!-- Notes Dropdown Content -->
-          <div id="notes-${snap.id}" class="hidden pl-3 pt-1 w-full">
+          <div id="notes-${snap.id}" class="${openNotes.has(snap.id) ? '' : 'hidden'} pl-3 pt-1 w-full">
             <ul class="list-disc pl-4 mb-2 space-y-1 marker:text-zinc-700">
               ${notesHtml}
             </ul>
-            <div class="flex items-center gap-2">
-              <input type="text" id="noteInput-${snap.id}" placeholder="Add a note or link (Press Enter)" 
-                     autocomplete="off" data-1p-ignore="true" data-lpignore="true"
-                     onkeypress="if(event.key === 'Enter') addTaskNote('items', '${snap.id}', 'noteInput-${snap.id}')"
-                     class="flex-1 bg-zinc-900/50 border border-zinc-800/80 text-zinc-300 text-xs font-light rounded px-2.5 py-1.5 focus:outline-none focus:border-teal-500/50 min-w-0">
-            </div>
           </div>
         `;
         container.appendChild(row);
@@ -692,11 +770,11 @@
     // ═══════════════════════════════════════════════════════════════════════════
 
     window.addProjectTask = async function () {
-      const input      = document.getElementById("projectInput");
+      const input = document.getElementById("projectInput");
       const importance = document.getElementById("importanceSelect").value;
-      const stage      = document.getElementById("stageSelect").value;
-      const isMain     = document.getElementById("isMainTaskCheck").checked;
-      const text       = input.value.trim();
+      const stage = document.getElementById("stageSelect").value;
+      const isMain = document.getElementById("isMainTaskCheck").checked;
+      const text = input.value.trim();
       if (!text) return;
 
       let finalIsMain = isMain;
@@ -705,7 +783,7 @@
       // Rollover logic: if marking as main task, check if there are already 3
       if (isMain) {
         const prevMainQ = query(collection(db, "projectTasks"), where("isMainTask", "==", true));
-        const prevSnap  = await getDocs(prevMainQ);
+        const prevSnap = await getDocs(prevMainQ);
         if (prevSnap.docs.length >= 3) {
           finalIsMain = false;
           finalStage = "in-progress"; // rollover into in progress
@@ -717,17 +795,17 @@
 
       await addDoc(collection(db, "projectTasks"), {
         text,
-        owner:      currentUser,
+        owner: currentUser,
         importance,
-        stage:      finalStage,
+        stage: finalStage,
         isMainTask: finalIsMain,
-        notes:      [],
-        createdAt:  serverTimestamp()
+        notes: [],
+        createdAt: serverTimestamp()
       });
     };
 
     function renderProjectHub(docs) {
-      const mainDisplay   = document.getElementById("mainTaskDisplay");
+      const mainDisplay = document.getElementById("mainTaskDisplay");
       const listContainer = document.getElementById("projectList");
 
       // ── Main task panel ───────────────────────────────────────────────────────
@@ -735,7 +813,18 @@
       if (mainDocs.length > 0) {
         mainDisplay.innerHTML = `<div class="flex flex-col gap-2">` + mainDocs.map(snap => {
           const d = snap.data();
-          const notesHtml = (d.notes || []).map(n => `<li class="text-xs text-teal-200/80 font-light leading-relaxed break-words">${esc(n)}</li>`).join("");
+          const notesHtml = (d.notes || []).map(n => `
+            <li class="text-xs text-teal-200/80 font-light leading-relaxed break-words flex items-start justify-between gap-2">
+              <span class="flex-1 break-words">${esc(n)}</span>
+              <button onclick="deleteNoteByEl(this)"
+                      data-col="projectTasks" data-doc="${snap.id}" data-note="${esc(n)}"
+                      class="flex-shrink-0 text-teal-700/50 hover:text-red-500/80 transition-all mt-0.5" title="Delete note">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </li>
+          `).join("");
           return `
             <div class="bg-teal-950/30 border border-teal-700/25 rounded-lg px-4 py-3 slide-in relative group flex flex-col">
               <span class="text-xs text-teal-700 tracking-[0.18em] uppercase font-medium block mb-1.5">Active Objective</span>
@@ -752,14 +841,15 @@
               </div>
 
               <!-- Notes Dropdown Content -->
-              <div id="notes-${snap.id}" class="hidden mt-3 pt-3 border-t border-teal-700/20">
+              <div id="notes-${snap.id}" class="${openNotes.has(snap.id) ? '' : 'hidden'} mt-3 pt-3 border-t border-teal-700/20">
                 <ul class="list-disc pl-4 mb-3 space-y-1 marker:text-teal-700/50">
                   ${notesHtml}
                 </ul>
                 <div class="flex items-center gap-2">
                   <input type="text" id="noteInput-${snap.id}" placeholder="Add a note or link (Press Enter)" 
-                         autocomplete="off" data-1p-ignore="true" data-lpignore="true"
-                         onkeypress="if(event.key === 'Enter') addTaskNote('projectTasks', '${snap.id}', 'noteInput-${snap.id}')"
+                         autocomplete="off" spellcheck="false" data-form-type="other" data-1p-ignore="true" data-lpignore="true"
+                         readonly onfocus="this.removeAttribute('readonly');"
+                         onkeydown="if(event.key === 'Enter') { event.preventDefault(); addTaskNote('projectTasks', '${snap.id}', 'noteInput-${snap.id}'); }"
                          class="flex-1 bg-teal-950/50 border border-teal-800/40 text-teal-100 text-xs font-light rounded px-2.5 py-1.5 focus:outline-none focus:border-teal-500/50 min-w-0">
                 </div>
               </div>
@@ -811,10 +901,10 @@
         listContainer.appendChild(header);
 
         groups[stage].forEach(snap => {
-          const d          = snap.data();
-          const impCfg     = IMPORTANCE[d.importance] ?? IMPORTANCE.medium;
+          const d = snap.data();
+          const impCfg = IMPORTANCE[d.importance] ?? IMPORTANCE.medium;
           const isComplete = stage === "complete";
-          const dimClass   = isComplete ? "opacity-45" : "";
+          const dimClass = isComplete ? "opacity-45" : "";
 
           const row = document.createElement("div");
           row.className = `flex items-start gap-3 py-2.5 border-b border-zinc-900/60 slide-in group ${dimClass}`;
@@ -870,22 +960,26 @@
       // Listener 1 — Personal items (private to current user)
       const unsubPersonal = onSnapshot(
         query(collection(db, "items"),
-              where("type",  "==", "personal"),
-              where("owner", "==", currentUser)),
-        snap => renderPersonal(snap.docs)
+          where("type", "==", "personal"),
+          where("owner", "==", currentUser)),
+        snap => renderPersonal(snap.docs),
+        err => console.error("Personal items listener error (live updates stopped):", err)
       );
 
-      // Listener 2 — Cofounder activity (all items owned by the other founder)
+      // Listener 2 — Cofounder activity (items owned by the other founder that were shared to feed)
       const unsubCofounder = onSnapshot(
         query(collection(db, "items"),
-              where("owner", "==", cofounder)),
-        snap => renderCofounderFeed(snap.docs)
+          where("owner", "==", cofounder),
+          where("sharedToFeed", "==", true)),
+        snap => renderCofounderFeed(snap.docs),
+        err => console.error("Cofounder feed listener error (live updates stopped):", err)
       );
 
       // Listener 3 — Shared project tasks (separate collection)
       const unsubProject = onSnapshot(
         query(collection(db, "projectTasks")),
-        snap => renderProjectHub(snap.docs)
+        snap => renderProjectHub(snap.docs),
+        err => console.error("Project hub listener error (live updates stopped):", err)
       );
 
       unsubscribers.push(unsubPersonal, unsubCofounder, unsubProject);
@@ -894,39 +988,39 @@
     // ── Auth: sign out ───────────────────────────────────────────────────────────
     window.signOutUser = async function () {
       unsubscribers.forEach(fn => fn());
-      unsubscribers      = [];
+      unsubscribers = [];
       cofounderPrevCount = 0;
-      currentUser        = null;
+      currentUser = null;
       await signOut(auth);
     };
 
     // ── Auth: show/hide modal ────────────────────────────────────────────────────
-    function showAuthModal()  { document.getElementById("authModal").classList.remove("hidden"); }
-    function hideAuthModal()  { document.getElementById("authModal").classList.add("hidden"); }
-    function showDashboard()  { document.getElementById("dashboard").classList.remove("hidden"); }
-    function hideDashboard()  { document.getElementById("dashboard").classList.add("hidden"); }
+    function showAuthModal() { document.getElementById("authModal").classList.remove("hidden"); }
+    function hideAuthModal() { document.getElementById("authModal").classList.add("hidden"); }
+    function showDashboard() { document.getElementById("dashboard").classList.remove("hidden"); }
+    function hideDashboard() { document.getElementById("dashboard").classList.add("hidden"); }
 
     // ── Auth: toggle login / register tabs ──────────────────────────────────────
     window.showTab = function (tab) {
-      document.getElementById("loginPanel").classList.toggle("hidden",    tab !== "login");
+      document.getElementById("loginPanel").classList.toggle("hidden", tab !== "login");
       document.getElementById("registerPanel").classList.toggle("hidden", tab !== "register");
-      document.getElementById("tabLogin").classList.toggle("border-teal-500",    tab === "login");
-      document.getElementById("tabLogin").classList.toggle("text-zinc-200",      tab === "login");
+      document.getElementById("tabLogin").classList.toggle("border-teal-500", tab === "login");
+      document.getElementById("tabLogin").classList.toggle("text-zinc-200", tab === "login");
       document.getElementById("tabLogin").classList.toggle("border-transparent", tab !== "login");
-      document.getElementById("tabLogin").classList.toggle("text-zinc-600",      tab !== "login");
-      document.getElementById("tabRegister").classList.toggle("border-teal-500",    tab === "register");
-      document.getElementById("tabRegister").classList.toggle("text-zinc-200",      tab === "register");
+      document.getElementById("tabLogin").classList.toggle("text-zinc-600", tab !== "login");
+      document.getElementById("tabRegister").classList.toggle("border-teal-500", tab === "register");
+      document.getElementById("tabRegister").classList.toggle("text-zinc-200", tab === "register");
       document.getElementById("tabRegister").classList.toggle("border-transparent", tab !== "register");
-      document.getElementById("tabRegister").classList.toggle("text-zinc-600",      tab !== "register");
+      document.getElementById("tabRegister").classList.toggle("text-zinc-600", tab !== "register");
       document.getElementById("authError").textContent = "";
     };
 
     // ── Auth: register ───────────────────────────────────────────────────────────
     // Email is derived from name — user never sees or enters an email address.
     window.registerUser = async function () {
-      const name     = document.querySelector('input[name="founderName"]:checked')?.value;
+      const name = document.querySelector('input[name="founderName"]:checked')?.value;
       const password = document.getElementById("regPassword").value;
-      const errEl    = document.getElementById("authError");
+      const errEl = document.getElementById("authError");
       errEl.textContent = "";
       if (!name || !password) {
         errEl.textContent = "Select a name and enter a password.";
@@ -944,9 +1038,9 @@
     // ── Auth: login ──────────────────────────────────────────────────────────────
     // Derives email from name selection — no email input shown to user.
     window.loginUser = async function () {
-      const name     = document.querySelector('input[name="loginName"]:checked')?.value;
+      const name = document.querySelector('input[name="loginName"]:checked')?.value;
       const password = document.getElementById("loginPassword").value;
-      const errEl    = document.getElementById("authError");
+      const errEl = document.getElementById("authError");
       errEl.textContent = "";
       if (!name || !password) {
         errEl.textContent = "Select a name and enter a password.";
@@ -985,20 +1079,20 @@
           name = name.charAt(0).toUpperCase() + name.slice(1);
         }
         currentUser = name ?? "Vash";
-        
+
         document.getElementById("headerUsername").textContent = currentUser;
         hideAuthModal();
         showDashboard();
         // Re-attach listeners fresh for this user
         unsubscribers.forEach(fn => fn());
-        unsubscribers      = [];
+        unsubscribers = [];
         cofounderPrevCount = 0;
         attachListeners();
       } else {
         // No user — tear down listeners and show login
         unsubscribers.forEach(fn => fn());
         unsubscribers = [];
-        currentUser   = null;
+        currentUser = null;
         hideDashboard();
         showAuthModal();
       }
@@ -1007,4 +1101,5 @@
   </script>
 
 </body>
+
 </html>
